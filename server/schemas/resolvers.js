@@ -1,25 +1,19 @@
-const { School, Class, Professor } = require('../models');
+const { Book, User } = require('../models');
 
 const resolvers = {
   Query: {
-    schools: async () => {
-      return await School.find({}).populate('classes').populate({
-        path: 'classes',
-        populate: 'professor'
+    books: async () => {
+      return await Book.find({}).populate('title').populate({
+        path: 'books',
+        populate: 'title'
       });
     },
-    classes: async () => {
-      return await Class.find({}).populate('professor');
+    users: async (parent, args) => {
+      return await User.findById(args.id);
     },
-    class: async (parent, args) => {
-      return await Class.findById(args.id);
-    },
-    professors: async () => {
-      return await Professor.find({}).populate('classes');
-    }
   },
   Mutation: {
-    addSchool: async (parent, { name, location, studentCount }) => {
+    createUser: async (parent, { name, location, studentCount }) => {
       return await School.create({ name, location, studentCount });
     },
     updateClass: async (parent, { id, building }) => {
