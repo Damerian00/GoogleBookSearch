@@ -49,8 +49,15 @@ const resolvers = {
         // Return the newly updated object instead of the original
         { new: true }
       );
-    }
-  }
+    },
+    deleteBook: async (parent, { bookId }, context) => {
+      if (context.user) {
+        return Book.findOneAndDelete({ _id: bookId })
+         
+        }
+       else { throw new AuthenticationError('You need to be logged in!');}
+      }
+  },
 };
 
 module.exports = resolvers;
