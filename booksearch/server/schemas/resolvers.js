@@ -39,14 +39,14 @@ const resolvers = {
       // Find and update the matching class using the destructured args
     const updatedUser = await User.findOneAndUpdate(
       {_id: context.user._id},
-      {$addToSet: { savedBook: newBook }},
+      {$addToSet: { savedBooks: newBook }},
       { new: true, runValidators: true}
     )
     return updatedUser;
    },
     removeBook: async (parent, { bookId }, context) => {
        const updatedUser = await User.findOneAndUpdate(
-         { _id: bookId, user },
+         { _id: context.user._id },
          { $pull: {savedBooks: {bookId}}},
          {new: true}
          )
